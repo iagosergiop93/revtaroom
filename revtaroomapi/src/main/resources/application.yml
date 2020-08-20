@@ -1,0 +1,23 @@
+spring:
+  profiles:
+    active: dev
+
+jwt:
+  header: Authorization
+  secret: rvtsecret
+
+---
+spring:
+  profiles: dev
+  datasource:
+    url: jdbc:mysql://localhost:3308/revtaroom
+    username: iago
+    password: P@ssw0rd
+    hikari:
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
