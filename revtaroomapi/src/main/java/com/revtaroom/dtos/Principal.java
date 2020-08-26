@@ -23,5 +23,11 @@ public class Principal {
 		this.username = user.getUsername();
 		this.role = user.getRole();
 	}
+
+	@Override
+	public String toString() {
+		return "Principal [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", username=" + username
+				+ ", role=" + role + "]";
+	}
 	
 }

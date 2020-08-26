@@ -20,7 +20,6 @@ import com.revtaroom.security.jwt.JwtConfig;
 
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = "com.revtaroom.repositories")
-@EnableAsync
 public class RevtaroomapiApplication {
 	
 	public static void main(String[] args) {

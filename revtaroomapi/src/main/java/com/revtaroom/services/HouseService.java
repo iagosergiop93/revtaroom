@@ -1,6 +1,8 @@
 package com.revtaroom.services;
 
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +25,13 @@ public class HouseService {
 	@Autowired
 	private OpenCageClient occ;
 	
+	@Transactional
 	public House insertHouse(House house) throws RuntimeException {
+		
+		// Check if User already has a house
+		House savedHouse = houseRepo.findByUserId(house.getUserId());
+		
+		if(savedHouse != null) houseRepo.delete(savedHouse);
 		
 		// Get and save address
 		Address addr = house.getAddress();
@@ -36,7 +44,7 @@ public class HouseService {
 		return house;
 	}
 	
-	
+	@Transactional
 	public Address getAndSaveCoordinates(Address addr) {
 		
 		try {

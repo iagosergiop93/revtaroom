@@ -29,7 +29,7 @@ public class AuthController {
 	
 	@ResponseStatus(code = HttpStatus.OK)
 	@PostMapping()
-	public Principal auth(HttpServletRequest req, HttpServletResponse resp, @RequestBody(required = false) Credentials cred) {
+	public Principal auth(HttpServletRequest req, HttpServletResponse resp, @RequestBody(required = false) Credentials cred) throws Throwable {
 		
 		Principal principal = null;
 		
@@ -52,12 +52,6 @@ public class AuthController {
 		
 		return principal;
 		
-	}
-	
-	@ResponseStatus(code = HttpStatus.I_AM_A_TEAPOT)
-	@ExceptionHandler
-	public String exceptionHandler(Exception e) {
-		return e.getMessage();
 	}
 	
 }

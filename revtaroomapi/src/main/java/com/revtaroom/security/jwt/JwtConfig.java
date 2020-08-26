@@ -17,7 +17,7 @@ public class JwtConfig {
 	public final String PREFIX = "Bearer ";
     
     public final int EXPIRATION = 24 * 60 * 60 * 1000;
-    public final SignatureAlgorithm signatureAlg = SignatureAlgorithm.HS256;
+    public final SignatureAlgorithm signatureAlg = SignatureAlgorithm.HS512;
 	
 	public Key SIGNING_KEY;
 	

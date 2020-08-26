@@ -39,9 +39,4 @@ public class UserController {
 		return principal;
 	}
 	
-	@ResponseStatus(code = HttpStatus.I_AM_A_TEAPOT)
-	@ExceptionHandler
-	public String exceptionHandler(Exception e) {
-		return e.getMessage();
-	}
 }

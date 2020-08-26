@@ -7,5 +7,7 @@ import com.revtaroom.entities.House;
 
 @Repository
 public interface HouseRepository extends JpaRepository<House, Long>{
-
+	
+	House findByUserId(long userId);
+	
 }

@@ -1,5 +1,6 @@
 package com.revtaroom.entities;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,7 +35,7 @@ public class House {
 	@Column(name = "user_id", nullable = false)
 	private long userId;
 	
-	@OneToOne()
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "addr_id", nullable = false)
 	private Address address;
 	

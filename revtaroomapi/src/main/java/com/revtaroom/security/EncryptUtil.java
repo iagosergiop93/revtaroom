@@ -9,7 +9,7 @@ public class EncryptUtil {
 	public static String createHash(String word) {
 		
 		byte[] byteArr = DatatypeConverter.parseBase64Binary(word);
-		String hash = BCrypt.hashpw(byteArr, BCrypt.gensalt());
+		String hash = BCrypt.hashpw(byteArr, BCrypt.gensalt(10));
 		
 		return hash;
 	}

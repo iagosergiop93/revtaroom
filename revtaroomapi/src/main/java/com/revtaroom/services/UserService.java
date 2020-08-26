@@ -11,6 +11,8 @@ import com.revtaroom.dtos.Principal;
 import com.revtaroom.dtos.validators.CredentialsValidator;
 import com.revtaroom.entities.User;
 import com.revtaroom.entities.UserRole;
+import com.revtaroom.exceptions.BadRequest;
+import com.revtaroom.exceptions.ServerError;
 import com.revtaroom.repositories.UserRepository;
 import com.revtaroom.security.EncryptUtil;
 
@@ -45,22 +47,24 @@ public class UserService {
 		return new Principal(user);
 	}
 	
-	public Principal login(Credentials cred) throws RuntimeException {
+	public Principal login(Credentials cred) throws Throwable {
 		User user = null;
 		
 		try {
 			credValidator.validate(cred);
 			
 			user = userRepo.findByUsername(cred.getUsername());
-			System.out.println(user.toString());
 			
 			if(user == null || !EncryptUtil.checkHash(cred.getPasswd(), user.getPasswd())) {
-				throw new RuntimeException("The username or the password is wrong");
+				throw new BadRequest(400, "The username or the password is wrong");
 			}
 			
-		} catch(RuntimeException e) {
+		} catch(BadRequest e) {
 			e.printStackTrace();
 			throw e;
+		} catch(RuntimeException e) {
+			e.printStackTrace();
+			throw new ServerError(500, e.getMessage());
 		}
 		
 		return new Principal(user);
