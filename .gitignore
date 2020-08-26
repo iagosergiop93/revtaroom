@@ -85,6 +85,7 @@ RemoteSystemsTempFiles/
 
 # .properties files
 *.properties
+application.yml
 
 # package-lock.json
 package-lock.json
