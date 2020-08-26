@@ -2,6 +2,7 @@ package com.revtaroom.security.jwt;
 
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.revtaroom.dtos.Principal;
@@ -12,7 +13,10 @@ import io.jsonwebtoken.Jwts;
 @Component
 public class JwtGenerator {
 	
-	public static String createJwt(Principal subject) {
+	@Autowired
+	private JwtConfig jwtConfig;
+	
+	public String createJwt(Principal subject) {
 		
 		long nowMillis = System.currentTimeMillis();
 		
@@ -20,11 +24,12 @@ public class JwtGenerator {
 				.setId(Long.toString(subject.getId()))
 				.setSubject(subject.getUsername())
 				.setIssuer("iagodev")
+				.claim("role", subject.getRole().getName())
 				.setIssuedAt(new Date(nowMillis))
-				.setExpiration(new Date(nowMillis + JwtConfig.EXPIRATION))
-				.signWith(JwtConfig.signatureAlg, JwtConfig.SIGNING_KEY);
+				.setExpiration(new Date(nowMillis + jwtConfig.EXPIRATION))
+				.signWith(jwtConfig.signatureAlg, jwtConfig.SIGNING_KEY);
 		
-		return JwtConfig.PREFIX + builder.compact();
+		return jwtConfig.PREFIX + builder.compact();
 	}
 	
 }

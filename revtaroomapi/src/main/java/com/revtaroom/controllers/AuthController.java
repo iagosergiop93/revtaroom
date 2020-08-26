@@ -24,6 +24,9 @@ public class AuthController {
 	@Autowired
 	private UserService userService;
 	
+	@Autowired
+	private PrincipalEncoder principalEncoder;
+	
 	@ResponseStatus(code = HttpStatus.OK)
 	@PostMapping()
 	public Principal auth(HttpServletRequest req, HttpServletResponse resp, @RequestBody(required = false) Credentials cred) {
@@ -43,7 +46,7 @@ public class AuthController {
 		}
 		
 		if(principal != null) {
-			String token = PrincipalEncoder.encodePrincipal(principal);
+			String token = principalEncoder.encodePrincipal(principal);
 			resp.addHeader("authorization", token);
 		}
 		

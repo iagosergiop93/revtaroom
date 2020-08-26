@@ -1,5 +1,6 @@
 package com.revtaroom.security.jwt;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
@@ -9,12 +10,15 @@ import io.jsonwebtoken.UnsupportedJwtException;
 @Component
 public class JwtDecoder {
 	
-	public static Claims decodeJWT(String jwt) throws UnsupportedJwtException {
+	@Autowired
+	private JwtConfig jwtConfig;
+	
+	public Claims decodeJWT(String jwt) throws UnsupportedJwtException {
 	    
-		jwt = jwt.replace(JwtConfig.PREFIX, "");
+		jwt = jwt.replace(jwtConfig.PREFIX, "");
 		
 		Claims claims = Jwts.parser()
-	            .setSigningKey(JwtConfig.SIGNING_KEY)
+	            .setSigningKey(jwtConfig.SIGNING_KEY)
 	            .parseClaimsJws(jwt).getBody();
 	    
 	    return claims;

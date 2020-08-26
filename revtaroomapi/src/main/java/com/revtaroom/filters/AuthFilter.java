@@ -9,6 +9,7 @@ import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.revtaroom.dtos.Principal;
@@ -22,6 +23,12 @@ import io.jsonwebtoken.ExpiredJwtException;
 public class AuthFilter extends HttpFilter {
 
 	private static final long serialVersionUID = 6346475414095485659L;
+	
+	@Autowired
+	private JwtConfig jwtConfig;
+	
+	@Autowired
+	private PrincipalEncoder principalEncoder;
 	
 	@Override
 	public void doFilter(HttpServletRequest req, HttpServletResponse resp, FilterChain chain) throws IOException, ServletException {
@@ -46,16 +53,17 @@ public class AuthFilter extends HttpFilter {
 	 */
 	public void extractPrincipal(HttpServletRequest req) throws IOException, ServletException {
 		System.out.println("Attempting to extract principal object from JWT...");
-		String header = req.getHeader(JwtConfig.HEADER);
+		String header = req.getHeader(jwtConfig.HEADER);
 		
-		if(header == null || !header.startsWith(JwtConfig.PREFIX)) {
+		if(header == null || !header.startsWith(jwtConfig.PREFIX)) {
 			System.out.println("No token found with required prefix");
+			req.setAttribute("principal", null); // blocks the user from sending the principal instead of the token
 			return;
 		}
 		
 		try {
 			
-			Principal principal = PrincipalEncoder.decodePrincipal(header);
+			Principal principal = principalEncoder.decodePrincipal(header);
 			req.setAttribute("principal", principal);
 			
 		} catch (ExpiredJwtException eje) {
@@ -63,6 +71,7 @@ public class AuthFilter extends HttpFilter {
 		} catch (Exception e) {
 			System.out.println("Error parsing JWT");
 			e.printStackTrace();
+			throw e;
 		}
 	}
 
