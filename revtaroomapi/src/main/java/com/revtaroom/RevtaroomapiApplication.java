@@ -16,10 +16,12 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.client.RestTemplate;
 
 import com.revtaroom.apis.opencage.OpenCageClient;
+import com.revtaroom.apis.opencage.utils.RestTemplateWrapper;
 import com.revtaroom.security.jwt.JwtConfig;
 
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = "com.revtaroom.repositories")
+@EnableAsync
 public class RevtaroomapiApplication {
 	
 	public static void main(String[] args) {
@@ -43,10 +45,8 @@ public class RevtaroomapiApplication {
 	@Bean
 	public OpenCageClient openCageClient(RestTemplateBuilder builder) {
 		RestTemplate restTemplate = builder.build();
-		OpenCageClient occ = new OpenCageClient();
-		occ.setRestTemplate(restTemplate);
-		occ.setApiUrl(endpoint);
-		
+		RestTemplateWrapper rtw = new RestTemplateWrapper(restTemplate);
+		OpenCageClient occ = new OpenCageClient(endpoint, rtw);
 		return occ;
 	}
 	
@@ -58,7 +58,6 @@ public class RevtaroomapiApplication {
 		JwtConfig config = new JwtConfig();
 		byte[] secretBytes = DatatypeConverter.parseBase64Binary(jwtSecret);
 		config.SIGNING_KEY = new SecretKeySpec(secretBytes, config.signatureAlg.getJcaName());
-		
 		return config;
 	}
 

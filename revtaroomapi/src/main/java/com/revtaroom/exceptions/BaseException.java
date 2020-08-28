@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter @NoArgsConstructor
-public class BaseException extends Throwable {
+public class BaseException extends RuntimeException {
 	
 	private Error error;
 	

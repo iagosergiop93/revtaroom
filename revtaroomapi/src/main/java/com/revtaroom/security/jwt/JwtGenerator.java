@@ -2,7 +2,6 @@ package com.revtaroom.security.jwt;
 
 import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.revtaroom.dtos.Principal;
@@ -13,8 +12,13 @@ import io.jsonwebtoken.Jwts;
 @Component
 public class JwtGenerator {
 	
-	@Autowired
 	private JwtConfig jwtConfig;
+	
+	public JwtGenerator(JwtConfig jwtConfig) {
+		super();
+		this.jwtConfig = jwtConfig;
+	}
+
 	
 	public String createJwt(Principal subject) {
 		

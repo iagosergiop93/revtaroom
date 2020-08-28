@@ -1,13 +1,15 @@
 package com.revtaroom.services;
 
+import java.util.concurrent.CompletableFuture;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import com.revtaroom.apis.opencage.Geometry;
 import com.revtaroom.apis.opencage.OpenCageClient;
+import com.revtaroom.apis.opencage.models.Geometry;
 import com.revtaroom.entities.Address;
 import com.revtaroom.entities.House;
 import com.revtaroom.repositories.AddressRepository;
@@ -16,15 +18,18 @@ import com.revtaroom.repositories.HouseRepository;
 @Service
 public class HouseService {
 	
-	@Autowired
 	private HouseRepository houseRepo;
-	
-	@Autowired
 	private AddressRepository addrRepo;
+	private OpenCageClient openCageClient;
 	
 	@Autowired
-	private OpenCageClient occ;
-	
+	public HouseService(HouseRepository houseRepo, AddressRepository addrRepo, OpenCageClient openCageClient) {
+		super();
+		this.houseRepo = houseRepo;
+		this.addrRepo = addrRepo;
+		this.openCageClient = openCageClient;
+	}
+
 	@Transactional
 	public House insertHouse(House house) throws RuntimeException {
 		
@@ -45,11 +50,12 @@ public class HouseService {
 	}
 	
 	@Transactional
-	public Address getAndSaveCoordinates(Address addr) {
+	@Async
+	public CompletableFuture<Address> getAndSaveCoordinates(Address addr) {
 		
 		try {
 			
-			Geometry coords = occ.getCoordinates(addr);
+			Geometry coords = openCageClient.getCoordinates(addr);
 			
 			addr.setLatitude(Double.toString(coords.lat));
 			addr.setLongitude(Double.toString(coords.lng));
@@ -60,7 +66,7 @@ public class HouseService {
 			e.printStackTrace();
 		}
 		
-		return addr;
+		return CompletableFuture.completedFuture(addr);
 	}
 	
 }

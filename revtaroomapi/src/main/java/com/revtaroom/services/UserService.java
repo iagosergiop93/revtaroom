@@ -19,12 +19,17 @@ import com.revtaroom.security.EncryptUtil;
 @Service
 public class UserService {
 	
-	@Autowired
 	UserRepository userRepo;
 	
-	@Autowired
-	CredentialsValidator credValidator;
+	CredentialsValidator credentialsValidator;
 	
+	@Autowired
+	public UserService(UserRepository userRepo, CredentialsValidator credentialsValidator) {
+		super();
+		this.userRepo = userRepo;
+		this.credentialsValidator = credentialsValidator;
+	}
+
 	public List<User> getAll() throws RuntimeException {
 		
 		return userRepo.findAll();
@@ -51,7 +56,7 @@ public class UserService {
 		User user = null;
 		
 		try {
-			credValidator.validate(cred);
+			credentialsValidator.validate(cred);
 			
 			user = userRepo.findByUsername(cred.getUsername());
 			

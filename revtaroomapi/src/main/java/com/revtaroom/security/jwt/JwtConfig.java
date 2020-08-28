@@ -2,12 +2,6 @@ package com.revtaroom.security.jwt;
 
 import java.security.Key;
 
-import javax.crypto.spec.SecretKeySpec;
-import javax.xml.bind.DatatypeConverter;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
 import io.jsonwebtoken.SignatureAlgorithm;
 
 public class JwtConfig {

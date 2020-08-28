@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.revtaroom.aop.Secured;
 import com.revtaroom.dtos.Principal;
-import com.revtaroom.entities.Address;
 import com.revtaroom.entities.House;
 import com.revtaroom.exceptions.BadRequest;
 import com.revtaroom.services.HouseService;
@@ -22,9 +21,14 @@ import com.revtaroom.services.HouseService;
 @RequestMapping("/houses")
 public class HouseController {
 	
-	@Autowired
 	private HouseService houseService;
 	
+	@Autowired
+	public HouseController(HouseService houseService) {
+		this.houseService = houseService;
+	}
+
+
 	@ResponseStatus(code = HttpStatus.CREATED)
 	@PostMapping("/house")
 	@Secured(allowedRoles = { "USER", "ADMIN" })
@@ -36,9 +40,7 @@ public class HouseController {
 		
 		house = houseService.insertHouse(house);
 		
-		Address addr = houseService.getAndSaveCoordinates(house.getAddress());
-		
-		if(addr != null) house.setAddress(addr);
+		houseService.getAndSaveCoordinates(house.getAddress()); // async method
 		
 		return house;
 	}

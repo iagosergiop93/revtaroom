@@ -5,7 +5,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,11 +20,15 @@ import com.revtaroom.services.UserService;
 @RequestMapping("/auth")
 public class AuthController {
 	
-	@Autowired
 	private UserService userService;
 	
-	@Autowired
 	private PrincipalEncoder principalEncoder;
+	
+	@Autowired
+	public AuthController(UserService userService, PrincipalEncoder principalEncoder) {
+		this.userService = userService;
+		this.principalEncoder = principalEncoder;
+	}
 	
 	@ResponseStatus(code = HttpStatus.OK)
 	@PostMapping()

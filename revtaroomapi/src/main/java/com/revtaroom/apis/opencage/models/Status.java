@@ -1,4 +1,4 @@
-package com.revtaroom.apis.opencage;
+package com.revtaroom.apis.opencage.models;
 
 public class Status {
 	

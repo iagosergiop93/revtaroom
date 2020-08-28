@@ -24,12 +24,18 @@ public class AuthFilter extends HttpFilter {
 
 	private static final long serialVersionUID = 6346475414095485659L;
 	
-	@Autowired
 	private JwtConfig jwtConfig;
 	
-	@Autowired
 	private PrincipalEncoder principalEncoder;
 	
+	
+	@Autowired
+	public AuthFilter(JwtConfig jwtConfig, PrincipalEncoder principalEncoder) {
+		super();
+		this.jwtConfig = jwtConfig;
+		this.principalEncoder = principalEncoder;
+	}
+
 	@Override
 	public void doFilter(HttpServletRequest req, HttpServletResponse resp, FilterChain chain) throws IOException, ServletException {
 		
