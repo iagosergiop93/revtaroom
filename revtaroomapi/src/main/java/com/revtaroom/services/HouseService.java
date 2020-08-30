@@ -1,5 +1,6 @@
 package com.revtaroom.services;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import javax.transaction.Transactional;
@@ -28,6 +29,12 @@ public class HouseService {
 		this.houseRepo = houseRepo;
 		this.addrRepo = addrRepo;
 		this.openCageClient = openCageClient;
+	}
+	
+	public List<House> getHouses() throws RuntimeException {
+		List<House> houses = houseRepo.findAll();
+		
+		return houses;
 	}
 
 	@Transactional

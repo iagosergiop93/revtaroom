@@ -22,6 +22,7 @@ import com.revtaroom.apis.opencage.models.Result;
 import com.revtaroom.apis.opencage.models.Status;
 import com.revtaroom.apis.opencage.utils.UrlAdapter;
 import com.revtaroom.entities.Address;
+import com.revtaroom.entities.builders.AddressBuilder;
 
 @Testable
 @TestInstance(Lifecycle.PER_CLASS)
@@ -48,6 +49,14 @@ public class OpenCageClientTest {
 		return resp;
 	}
 	
+	private OpenCageResponse mockBadRequestResponse() {
+		OpenCageResponse resp = new OpenCageResponse();
+		resp.status = new Status();
+		resp.status.code = 400;
+		
+		return resp;
+	}
+	
 	@Test
 	public void handleOkApiResponse() {
 		Geometry geometry = getValidGeometry();
@@ -57,9 +66,49 @@ public class OpenCageClientTest {
 		
 		OpenCageClient occ = new OpenCageClient("", rc);
 		
-		Geometry finalResult = occ.getCoordinates(new Address());
+		Address addr = new AddressBuilder()
+							.streetAddr1("Some Street")
+							.city("Some City")
+							.state("Some State")
+							.build();
+		
+		Geometry finalResult = occ.getCoordinates(addr);
 		
 		assertEquals(geometry, finalResult);
+	}
+	
+	@Test
+	public void handle400Response() {
+		OpenCageResponse badResp = mockBadRequestResponse();
+		RestClient<OpenCageResponse> rc = (url) -> badResp;
+		
+		OpenCageClient occ = new OpenCageClient("", rc);
+		
+		Address addr = new AddressBuilder()
+				.streetAddr1("Some Street")
+				.city("Some City")
+				.state("Some State")
+				.build();
+		
+		assertThrows(RuntimeException.class, () -> {
+			occ.getCoordinates(addr);
+		});
+		
+	}
+	
+	@Test
+	public void handleInvalidAddress() {
+		Geometry geometry = getValidGeometry();
+		
+		OpenCageResponse okResp = mockOkResponse(geometry);
+		RestClient<OpenCageResponse> rc = (url) -> okResp;
+		
+		OpenCageClient occ = new OpenCageClient("", rc);
+		
+		assertThrows(RuntimeException.class, () -> {
+			occ.getCoordinates(new Address());
+		});
+		
 	}
 	
 }

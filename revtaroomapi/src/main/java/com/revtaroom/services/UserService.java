@@ -8,13 +8,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.revtaroom.dtos.Credentials;
 import com.revtaroom.dtos.Principal;
-import com.revtaroom.dtos.validators.CredentialsValidator;
 import com.revtaroom.entities.User;
 import com.revtaroom.entities.UserRole;
 import com.revtaroom.exceptions.BadRequest;
 import com.revtaroom.exceptions.ServerError;
 import com.revtaroom.repositories.UserRepository;
 import com.revtaroom.security.EncryptUtil;
+import com.revtaroom.utils.validator.CredentialsValidator;
 
 @Service
 public class UserService {

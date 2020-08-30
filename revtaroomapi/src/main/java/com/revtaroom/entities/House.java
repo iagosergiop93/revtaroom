@@ -1,5 +1,7 @@
 package com.revtaroom.entities;
 
+import java.sql.Timestamp;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -38,5 +40,11 @@ public class House {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "addr_id", nullable = false)
 	private Address address;
+	
+	@Column(updatable = false, columnDefinition = "timestamp DEFAULT CURRENT_TIMESTAMP")
+	private Timestamp _createdAt;
+	
+	@Column(columnDefinition = "timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+	private Timestamp _updatedAt;
 	
 }

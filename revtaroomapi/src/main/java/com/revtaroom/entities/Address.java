@@ -1,5 +1,7 @@
 package com.revtaroom.entities;
 
+import java.sql.Timestamp;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -49,6 +51,12 @@ public class Address {
 	
 	@Column(name = "longitude", nullable = true)
 	private String longitude;
+	
+	@Column(updatable = false, columnDefinition = "timestamp DEFAULT CURRENT_TIMESTAMP")
+	private Timestamp _createdAt;
+	
+	@Column(columnDefinition = "timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+	private Timestamp _updatedAt;
 
 	@Override
 	public int hashCode() {

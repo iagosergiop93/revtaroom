@@ -5,7 +5,7 @@ import com.revtaroom.apis.opencage.models.OpenCageResponse;
 import com.revtaroom.apis.opencage.models.RestClient;
 import com.revtaroom.apis.opencage.utils.UrlAdapter;
 import com.revtaroom.entities.Address;
-import com.revtaroom.exceptions.ServerError;
+import com.revtaroom.utils.validator.AddressValidator;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,8 +23,10 @@ public class OpenCageClient {
 		this.restClient = restClient;
 	}
 	
-	public Geometry getCoordinates(Address addr) throws ServerError {
-
+	public Geometry getCoordinates(Address addr) throws RuntimeException {
+		
+		AddressValidator.validate(addr);
+		
 		String url = apiUrl + UrlAdapter.prepareUrl(addr);
 		OpenCageResponse res = restClient.get(url);
 		Geometry geometry = res.results[0].geometry;
