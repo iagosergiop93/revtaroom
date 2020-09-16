@@ -56,7 +56,7 @@ public class UserService {
 		User user = null;
 		
 		try {
-			credentialsValidator.validate(cred);
+			CredentialsValidator.validate(cred);
 			
 			user = userRepo.findByUsername(cred.getUsername());
 			

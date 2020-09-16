@@ -36,6 +36,12 @@ public class HouseService {
 		
 		return houses;
 	}
+	
+	public House getHousesByUserId(long userId) {
+		House house = houseRepo.findByUserId(userId);
+		
+		return house;
+	}
 
 	@Transactional
 	public House insertHouse(House house) throws RuntimeException {

@@ -21,7 +21,7 @@ import lombok.Setter;
 public class Room {
 	
 	@Id
-	@Column(name = "profile_id")
+	@Column(name = "room_id")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_pk")
 	private long id;
 	
